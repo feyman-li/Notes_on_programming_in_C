@@ -1,4 +1,4 @@
-#Style
+#Style philosophy
 
 What follows is a set of short essays that collectively encourage a philosophy of clarity in programming rather than giving hard rules.
 
@@ -10,6 +10,7 @@ Say what you want to say in the program, neatly and consistently.  Then move on.
 
 This is largely a matter of taste, but taste is relevant to clarity. 
 
+##procedure names
  Procedure names should reflect what they do; function names should reflect what they return.  Functions are used in expressions, often in things like if's, so they need to read appropriately. 
  
         if(checksize(x))
@@ -43,5 +44,30 @@ Simple rule: include files should never include include files.
  There's a little dance involving #ifdef's that can prevent a file being read twice, but it's usually done wrong in practice - the #ifdef's are in the file itself, not the file that includes it.  The result is often thousands of needless lines of code passing through the lexical analyzer, which is (in good compilers) the most expensive phase. 
 
 ------
+
 #Comments
-A delicate matter, requiring taste and judgement.  I tend to err on the side of eliminating comments, for several reasons.  First, if the code is clear, and uses good type names and variable names, it should explain itself.  Second, comments aren't checked by the compiler, so there is no guarantee they're right, especially after the code is modified.  A misleading comment can be very confusing.  Third, the issue of typography: comments clutter code. 
+##style
+A delicate matter, requiring taste and judgement.  I tend to err on the side of eliminating comments, for several reasons.  First, if the code is clear, and uses good type names and variable names, it should explain itself.  Second, comments aren't checked by the compiler, so there is no guarantee they're right, especially after the code is modified.  A misleading comment can be very confusing.  Third, the issue of typography: comments clutter code.
+
+There are two ways to write a comment in Standard C. 
+
+*    Traditionally, a comment begins with an occurrence of two characters **/\*** and ends with the first subsequent occurrence of the two character **\*/**. Comments may contain any number of characters and are always treated as whitespace.
+
+*    Beginning with C99, a comment also begins with the characters **//** and extends up to (but does not include) the next line break.
+
+Comments are not recognized inside string or character constants or within other comments, for example:
+
+	printf("%d //won't comment// is \n", i);
+
+the **//** inside**""**, not a comment. Standard C specifies that all comments are to be replaced by single space character for the purposes of translation of the C program, but the older implementations do not insert any whitespace.
+	
+##Nestable comments issue
+A few non-Standard C implementations implement "nestable comments", but it is not standard, and programmers should not depend on it. Comments are sometimes used in other language to "comment out" code, thus removing the code from the program without physically deleting it from the source file. This practice is a bad idea in C, because it won't work if the code you're trying to get rid of has any comments in it. To cause the compiler to ignore large parts of a C program, it is best to enclose the parts to be removed with the preprocessor commands
+
+	    #if 0
+			statements
+	    #endif
+
+the program statements between the **#if** and the **#endif** are effectively removed from the program. This avoids having to worry about **/*-style** comments in the statements. 
+	
+
