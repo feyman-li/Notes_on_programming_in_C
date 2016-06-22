@@ -31,7 +31,7 @@ Comments are not recognized inside string or character constants or within other
 
 because of the **//** inside **" "**, they are regarded as characters. 
 
-Standard C specifies that all comments are to be replaced by single space character for the purposes of translation of the C program, but the older implementations do not insert any whitespace.
+*Standard C specifies that all comments are to be replaced by single space character for the purposes of translation of the C program, but the older implementations do not insert any whitespace. You can add some comments in code, and use the "gcc -E" to generate the preprocessor *.i file to check it.*
 
 ###Nestable comments issue
 A few non-Standard C implementations implement "nestable comments", but it is not standard, and programmers should not depend on it. Comments are sometimes used in other language to "comment out" code, thus removing the code from the program without physically deleting it from the source file. This practice is a bad idea in C, because it won't work if the code you're trying to get rid of has any comments in it. To cause the compiler to ignore large parts of a C program, it is best to enclose the parts to be removed with the preprocessor commands
